@@ -1,0 +1,2 @@
+# hsplanner-api
+HS API
