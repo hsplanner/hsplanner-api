@@ -1,12 +1,11 @@
 import express from 'express';
-import userRoutes from './modules/user.routes.js';
+/* import userRoutes from './routes/user.routes.js';  */
+import routes from './routes/index.js';
+
 
 const app = express();
-
-app.get('/', (req, res) => {
-    return res.send("Teste");
-});
-
-app.use(userRoutes)
+/* app.use(userRoutes) */
+app.use(express.json());
+app.use(routes) 
 
 export default app;
