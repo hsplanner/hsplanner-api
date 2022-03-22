@@ -1,7 +1,7 @@
 export function getAll(req, res) {
-  return res.send('all');
+  return res.json({msg: 'Get ALL'});
 }
 
 export function getOne(req, res) {
-  return res.send('One');
+  return res.json({msg: 'Get ONE'});
 }
