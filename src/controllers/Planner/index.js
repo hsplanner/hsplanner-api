@@ -20,14 +20,29 @@ export const getOne = async(req, res) => {
   }
 }
 
+export const getAllUser = async(req, res) => {
+  try {
+    const {userId} = req.params;
+    const planner =  await Planner.find({'userId': userId})
+    return res.json(planner)
+  } catch (error) {
+    return res.status(400).send(error.message)
+  }
+}
+
 export const store = async (req, res) => { 
   try {
-    const { name } = req.body;
+    const { title, description, status, userId} = req.body;
     const planner = new Planner({
-      name
+      title, description, status, userId
     })
-    planner.save();
-    return res.json(planner)
+    if(title && description && userId){
+      planner.save();
+      return res.json(planner)
+    }
+    else{
+      return res.status(400).json({ message: "Dados incompletos" })
+    }
   } catch (error) {
     return res.status(400).send(error.message)
   }
