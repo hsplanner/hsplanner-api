@@ -28,7 +28,7 @@ export const getAll = async (req, res) => {
 export const getOneUsername = async(req, res) => {
     try {
         const {username} = req.params;
-        const user =  await User.find({'username': username})
+        const user =  await User.findOne({'username': username})
         return res.json(user)
     } catch (err) {
         return res.status(400).send(err.message)

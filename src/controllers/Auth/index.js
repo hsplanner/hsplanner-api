@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from "../../models/user.js";
 
 export const login = async (req, res) => {
@@ -8,13 +9,34 @@ export const login = async (req, res) => {
         if (user.length === 0) {
             return res.status(400).json({ message: "Usuário não existe" })
         }
-        console.log(user);
+
         const passwordValid = await bcrypt.compare(passwordHash, user.passwordHash);
         if (!passwordValid) {
             return res.status(400).json({ message: "Usuário ou senha incorreta" })
         }
 
-        return res.json(user)
+        const token = jwt.sign({
+            id: user._id,
+            username: user.username,
+            name: user.name,
+            email: user.email,
+            birthdate: user.birthdate,
+            userType: user.userType
+        }, 
+        "hsplanner" ,
+        {
+        expiresIn: "5d"
+        }); 
+
+        return res.json({
+                            id: user._id,
+                            username: user.username,
+                            name: user.name,
+                            email: user.email,
+                            birthdate: user.birthdate,
+                            userType: user.userType,
+                            token
+                            })
     }
     catch (err) {
         return res.status(400).send(err.message)
