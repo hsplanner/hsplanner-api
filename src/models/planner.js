@@ -7,6 +7,14 @@ const PlannerSchema = new Schema({
   description: String,
   status: {type: Number, default: 1},
   userId: {type: String, require: true},
+  events: [
+    {
+    description: {type: String},
+    startDate: {type: Date},
+    endDate: {type: Date},
+    color: {type: String},
+    }
+  ]
 });
 
 const Planner = model('Planner', PlannerSchema)
