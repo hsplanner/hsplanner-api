@@ -3,7 +3,7 @@ import {getAll, getOne, store, getAllUser, updateWithEvent} from '../controllers
 
 const plannerRoutes = Router();
 
-plannerRoutes.get('/planner', getAll)
+plannerRoutes.get('/planners', getAll)
 plannerRoutes.post('/planner', store)
 plannerRoutes.get('/planner/:id', getOne)
 plannerRoutes.get('/planners/:userId', getAllUser)
