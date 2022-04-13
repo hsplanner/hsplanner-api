@@ -2,7 +2,7 @@ import Planner from "../../models/planner.js";
 
 export const getAll = async (req, res) => {
   try {
-    const planners =  await Planner.find()
+    const planners =  await Planner.find({status: 0})
     return res.json(planners)
   } catch (error) {
     return res.status(400).send(error.message)
