@@ -5,8 +5,8 @@ import User from "../../models/user.js";
 export const login = async (req, res) => {
     try{
         const {username, passwordHash} = req.body;
-        const user =  await User.findOne({'username': username})
-        if (user.length === 0) {
+        const user = await User.findOne({'username': username })
+        if (!user) {
             return res.status(400).json({ message: "Usuário não existe" })
         }
 
