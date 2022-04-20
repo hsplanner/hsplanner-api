@@ -48,27 +48,17 @@ export const store = async (req, res) => {
   }
 }
 
-export const updateWithEvent = async (req, res) => {
-    const { description, startDate, endDate, color, plannerId} = req.body;
-  
-    const event = {
-      description: description,
-      startDate: startDate,
-      endDate: endDate,
-      color: color
-    }
+export const update = async (req, res) => {
+  const { body } = req;
+  const { _id } = body;
 
-    await Planner.findOneAndUpdate({plannerId}, {
-      $push: {
-        events: event
-      }
-    }).then(x => {
-      res.status(200).send({
-          message: 'Usuário atualizado com sucesso!'
-      });
-    }).catch(e => {
-      res.status(400).send({
-          message: 'Falha ao atualizar o Usuário =(', data: e
-      });
+  await Planner.findByIdAndUpdate(_id, body).then(x => {
+    res.status(200).send({
+        message: 'Planner atualizado com sucesso!'
     });
+  }).catch(e => {
+    res.status(400).send({
+        message: 'Falha ao atualizar o Planner =(', data: e
+    });
+  });
 };
