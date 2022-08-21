@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 
 export const create = async (req, res) => { 
     try {
+      console.log("chegouSIgnUp")
       const { name, username, email, birthdate, passwordHash, userType } = req.body;
       const salt = bcrypt.genSaltSync(10);
       const cryptpassword = bcrypt.hashSync(passwordHash, salt);
@@ -10,8 +11,10 @@ export const create = async (req, res) => {
         name, username, email, birthdate, passwordHash: cryptpassword, userType
       })
       user.save();
+      console.log("Salvou no DB")
       return res.json(user)
     } catch (error) {
+      console.log("error", error)
       return res.status(400).send(error.message)
     }
 }
