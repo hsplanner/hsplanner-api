@@ -85,24 +85,5 @@ export const getOneUsername = async(req, res) => {
     }
 }
 
-export const validateUsernameCreation = async (username) => {
-  const existUsername =  await User.findOne({'username': username})
-  if(existUsername){
-    return res.status(400).json({
-      success: false,
-      message: "Nome de usuário já está sendo utilizado."
-    })
-  }
-}
-
-export const validateEmailCreation = async (email) => {
-  const existEmail = await User.findOne({'email': email})
-  if(existEmail){
-      return res.status(400).json({
-          success: false,
-          message: "E-mail já está sendo utilizado."
-        })   
-  }
-}
 
 
