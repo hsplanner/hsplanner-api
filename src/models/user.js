@@ -8,7 +8,8 @@ const UserSchema = new Schema({
     email: {type: String, require: true},
     birthdate: {type: Date, require: true},
     passwordHash: {type: String, require: true},
-    userType: {type: Number, default: 0}
+    userType: {type: Number, default: 0},
+    idTutor: {type: Number, require: false}
 });
 
 const User = model('User', UserSchema)

@@ -5,6 +5,22 @@ export const create = async (req, res) => {
     try {
       console.log("chegouSIgnUp")
       const { name, username, email, birthdate, passwordHash, userType } = req.body;
+      
+      const existUsername =  await User.findOne({'username': username})
+      if(existUsername){
+        return res.status(400).json({
+          success: false,
+          message: "Nome de usuário já está sendo utilizado."
+        })
+      }      
+      const existEmail = await User.findOne({'email': email})
+      if(existEmail){
+          return res.status(400).json({
+              success: false,
+              message: "E-mail já está sendo utilizado."
+            })   
+      }      
+      
       const salt = bcrypt.genSaltSync(10);
       const cryptpassword = bcrypt.hashSync(passwordHash, salt);
       const user = new User({
@@ -17,6 +33,37 @@ export const create = async (req, res) => {
       console.log("error", error)
       return res.status(400).send(error.message)
     }
+}
+
+export const createStudent = async (req, res) => { 
+  try {
+    const { name, username, email, birthdate, passwordHash, userType, idTutor } = req.body;
+    const existUsername =  await User.findOne({'username': username})
+    if(existUsername){
+      return res.status(400).json({
+        success: false,
+        message: "Nome de usuário já está sendo utilizado."
+      })
+    }      
+    const existEmail = await User.findOne({'email': email})
+    if(existEmail){
+        return res.status(400).json({
+            success: false,
+            message: "E-mail já está sendo utilizado."
+          })   
+    }  
+    const salt = bcrypt.genSaltSync(10);
+    const cryptpassword = bcrypt.hashSync(passwordHash, salt);
+    const user = new User({
+      name, username, email, birthdate, passwordHash: cryptpassword, userType, idTutor
+    })
+    user.save();
+    console.log("Salvou no DB")
+    return res.json(user)
+  } catch (error) {
+    console.log("error", error)
+    return res.status(400).send(error.message)
+  }
 }
 
 export const getAll = async (req, res) => {
@@ -36,6 +83,26 @@ export const getOneUsername = async(req, res) => {
     } catch (err) {
         return res.status(400).send(err.message)
     }
+}
+
+export const validateUsernameCreation = async (username) => {
+  const existUsername =  await User.findOne({'username': username})
+  if(existUsername){
+    return res.status(400).json({
+      success: false,
+      message: "Nome de usuário já está sendo utilizado."
+    })
+  }
+}
+
+export const validateEmailCreation = async (email) => {
+  const existEmail = await User.findOne({'email': email})
+  if(existEmail){
+      return res.status(400).json({
+          success: false,
+          message: "E-mail já está sendo utilizado."
+        })   
+  }
 }
 
 

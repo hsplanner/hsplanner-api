@@ -6,5 +6,6 @@ const userRoutes = Router();
 userRoutes.get('/users', getAll);
 userRoutes.get('/user/:username', getOneUsername);
 userRoutes.post('/user', create);
+userRoutes.post('/student')
 
 export default userRoutes;
