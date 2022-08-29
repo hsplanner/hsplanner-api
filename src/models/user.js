@@ -9,7 +9,7 @@ const UserSchema = new Schema({
     birthdate: {type: Date, require: true},
     passwordHash: {type: String, require: true},
     userType: {type: Number, default: 0},
-    idTutor: {type: Number, require: false}
+    idTutor: {type: String, require: false}
 });
 
 const User = model('User', UserSchema)
