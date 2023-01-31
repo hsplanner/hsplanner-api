@@ -103,20 +103,17 @@ export const store = async (req, res) => {
 }
 
 export const update = async (req, res) => {
-  const { body } = req;
-  const _id = body.plannerId;
+  const { description, startDate, endDate, color, plannerId } = req.body;
 
   const atividade = {
-    descricao: body.description,
-    dtInicio: body.startDate,
-    dtFim: body.endDate,
-    horasPlanejadas: body.horas,
-    horasExecutadas: body.horas,
-    cor: body.color
+    descricao: description,
+    dtInicio: startDate,
+    dtFim: endDate,
+    cor: color
   }
-  
-  await Planner.findOneAndUpdate(_id, 
-    {$push:
+
+  await Planner.findOneAndUpdate({_id: plannerId}, {
+    $push:
       {
         atividades: atividade
       } 
