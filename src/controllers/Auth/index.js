@@ -5,7 +5,7 @@ import User from "../../models/user.js";
 export const login = async (req, res) => {
     try{
         const {username, passwordHash} = req.body;
-        const user = await User.findOne({'username': username })
+        const user = await User.findOne({'usuario': username })
         if (!user) {
             return res.status(400).json({ message: "Usuário não existe" })
         }
@@ -17,11 +17,11 @@ export const login = async (req, res) => {
 
         const token = jwt.sign({
             id: user._id,
-            username: user.username,
-            name: user.name,
+            username: user.usuario,
+            name: user.nome,
             email: user.email,
-            birthdate: user.birthdate,
-            userType: user.userType
+            birthdate: user.dataNascimento,
+            userType: user.tipo
         }, 
         "hsplanner" ,
         {
@@ -30,11 +30,11 @@ export const login = async (req, res) => {
 
         return res.json({
                             id: user._id,
-                            username: user.username,
-                            name: user.name,
+                            username: user.usuario,
+                            name: user.nome,
                             email: user.email,
-                            birthdate: user.birthdate,
-                            userType: user.userType,
+                            birthdate: user.dataNascimento,
+                            userType: user.tipo,
                             token
                             })
     }
