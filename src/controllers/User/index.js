@@ -64,7 +64,20 @@ export const create = async (req, res) => {
 export const getAll = async (req, res) => {
     try {
       const users =  await User.find({})
-      return res.json(users)
+      let arrayUsers = []
+      users.forEach(user => {
+          let objUser = {
+                        _id: user.id,
+                        name: user.nome, 
+                        username: user.usuario, 
+                        email: user.email, 
+                        birthdate: user.dataNascimento, 
+                        userType: user.tipo, 
+                        idTutor: user.idTutor,
+                      };
+          arrayUsers.push(objUser);
+      });
+      return res.json(arrayUsers)
     } catch (error) {
       return res.status(400).send(error.message)
     }
@@ -74,7 +87,20 @@ export const getAllStudentOfTutor = async (req, res) => {
   try {
     const {idTutor} = req.params;
     const users =  await User.find({'idTutor': idTutor})
-    return res.json(users)
+    let arrayUsers = []
+    users.forEach(user => {
+        let objUser = {
+                      _id: user.id,
+                      name: user.nome, 
+                      username: user.usuario, 
+                      email: user.email, 
+                      birthdate: user.dataNascimento, 
+                      userType: user.tipo, 
+                      idTutor: user.idTutor,
+                    };
+        arrayUsers.push(objUser);
+    });
+    return res.json(arrayUsers)
   } catch (error) {
     return res.status(400).send(error.message)
   }
@@ -85,6 +111,7 @@ export const getOneUsername = async(req, res) => {
         const {username} = req.params;
         const user =  await User.findOne({'usuario': username})
         return res.json({
+          _id: user.id,
           name: user.nome, 
           username: user.usuario, 
           email: user.email, 

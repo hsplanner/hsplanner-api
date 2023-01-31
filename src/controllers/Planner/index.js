@@ -3,7 +3,26 @@ import Planner from "../../models/planner.js";
 export const getAll = async (req, res) => {
   try {
     const planners =  await Planner.find({status: 0})
-    return res.json(planners)
+    if(planners.length > 0){
+      let arrayPlanners = []
+      planners.forEach(planner => {
+        let objPlanner = {
+                          _id: planner.id,
+                          title: planner.titulo,
+                          description: planner.descricao,
+                          status: planner.status,
+                          userId: planner.userId
+                        }
+        arrayPlanners.push(objPlanner)
+      });
+      return res.json(arrayPlanners)
+    }
+    else{
+      res.status(200).send({
+        message: 'Não existem planners públicos!'
+      });    
+    }
+    
   } catch (error) {
     return res.status(400).send(error.message)
   }
@@ -12,9 +31,28 @@ export const getAll = async (req, res) => {
 export const getOne = async(req, res) => {
   try {
     const {id} = req.params;
-    console.log('id', id)
-    const planner =  await Planner.findById(id)
-    return res.json(planner)
+    console.log('id', id);
+    const planner =  await Planner.findById(id);
+    const events = planner.atividades;
+    let arrayEvents = []
+    events.forEach(event => {
+        let objEvent = {
+                        _id: event.id,
+                        description: event.descricao,
+                        startDate: event.dtInicio,
+                        endDate: event.dtFim,
+                        color: event.cor
+        };
+        arrayEvents.push(objEvent);
+    });
+    return res.json({
+      _id: planner.id,
+      title: planner.titulo,
+      description: planner.descricao,
+      status: planner.status,
+      userId: planner.userId,
+      events: arrayEvents
+    })
   } catch (error) {
     return res.status(400).send(error.message)
   }
