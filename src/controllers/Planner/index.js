@@ -34,11 +34,17 @@ export const store = async (req, res) => {
   try {
     const { title, description, status, userId} = req.body;
     const planner = new Planner({
-      title, description, status, userId
+      titulo: title, descricao: description, status, userId
     })
     if(title && description && userId){
       planner.save();
-      return res.json(planner)
+      return res.json({
+        title: planner.titulo,
+        description: planner.descricao,
+        status: planner.status,
+        userId: planner.userId,
+        events: planner.atividades
+      })
     }
     else{
       return res.status(400).json({ message: "Dados incompletos" })
@@ -50,9 +56,23 @@ export const store = async (req, res) => {
 
 export const update = async (req, res) => {
   const { body } = req;
-  const { _id } = body;
+  const _id = body.plannerId;
 
-  await Planner.findByIdAndUpdate(_id, body).then(x => {
+  const atividade = {
+    descricao: body.description,
+    dtInicio: body.startDate,
+    dtFim: body.endDate,
+    horasPlanejadas: body.horas,
+    horasExecutadas: body.horas,
+    cor: body.color
+  }
+  
+  await Planner.findOneAndUpdate(_id, 
+    {$push:
+      {
+        atividades: atividade
+      } 
+  }).then(x => {
     res.status(200).send({
         message: 'Planner atualizado com sucesso!'
     });

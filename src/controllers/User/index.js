@@ -6,7 +6,7 @@ export const create = async (req, res) => {
       console.log("chegouSIgnUp")
       const { name, username, email, birthdate, passwordHash, userType, idTutor} = req.body;
       
-      const existUsername =  await User.findOne({'username': username})
+      const existUsername =  await User.findOne({'usuario': username})
       if(existUsername){
         return res.status(400).json({
           success: false,
@@ -24,7 +24,7 @@ export const create = async (req, res) => {
       if(userType === 1){      
         if(idTutor != "" && idTutor != null){
           const tutor = await User.findOne({'_id': idTutor})
-          if(tutor.userType != 0){
+          if(tutor.tipo != 0){
             return res.status(400).json({
               success: false,
               message: "Este usuário não possui perfil para a ação."
@@ -38,27 +38,32 @@ export const create = async (req, res) => {
           }) 
         }
      }
-
-
       
       const salt = bcrypt.genSaltSync(10);
       const cryptpassword = bcrypt.hashSync(passwordHash, salt);
       const user = new User({
-        name, username, email, birthdate, passwordHash: cryptpassword, userType, idTutor
+        nome: name, usuario: username, email, dataNascimento: birthdate,
+        passwordHash: cryptpassword, tipo: userType, idTutor
       })
       user.save();
       console.log("Salvou no DB")
-      return res.json(user)
+      return res.json({
+        name: user.nome, 
+        username: user.usuario, 
+        email: user.email, 
+        birthdate: user.dataNascimento, 
+        userType: user.tipo, 
+        idTutor: user.idTutor
+      })
     } catch (error) {
       console.log("error", error)
       return res.status(400).send(error.message)
     }
 }
 
-
 export const getAll = async (req, res) => {
     try {
-      const users =  await User.find()
+      const users =  await User.find({})
       return res.json(users)
     } catch (error) {
       return res.status(400).send(error.message)
@@ -78,8 +83,15 @@ export const getAllStudentOfTutor = async (req, res) => {
 export const getOneUsername = async(req, res) => {
     try {
         const {username} = req.params;
-        const user =  await User.findOne({'username': username})
-        return res.json(user)
+        const user =  await User.findOne({'usuario': username})
+        return res.json({
+          name: user.nome, 
+          username: user.usuario, 
+          email: user.email, 
+          birthdate: user.dataNascimento, 
+          userType: user.tipo, 
+          idTutor: user.idTutor
+        })
     } catch (err) {
         return res.status(400).send(err.message)
     }

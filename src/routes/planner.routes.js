@@ -7,7 +7,7 @@ plannerRoutes.get('/planners', getAll)
 plannerRoutes.post('/planner', store)
 plannerRoutes.get('/planner/:id', getOne)
 plannerRoutes.get('/planners/:userId', getAllUser)
-plannerRoutes.patch('/planner/', update)
+plannerRoutes.patch('/planner', update)
 
 
 
