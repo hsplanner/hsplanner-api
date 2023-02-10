@@ -11,7 +11,8 @@ export const getAll = async (req, res) => {
                           title: planner.titulo,
                           description: planner.descricao,
                           status: planner.status,
-                          userId: planner.userId
+                          idTutor: planner.idTutor,
+                          idAluno: planner.idAluno,
                         }
         arrayPlanners.push(objPlanner)
       });
@@ -49,7 +50,8 @@ export const getOne = async(req, res) => {
       title: planner.titulo,
       description: planner.descricao,
       status: planner.status,
-      userId: planner.userId,
+      idTutor: planner.idTutor,
+      idAluno: planner.idAluno,
       events: arrayEvents
     })
   } catch (error) {
@@ -59,8 +61,8 @@ export const getOne = async(req, res) => {
 
 export const getAllUser = async(req, res) => {
   try {
-    const {userId} = req.params;
-    const planners =  await Planner.find({'userId': userId})
+    const {idTutor, idAluno} = req.params;
+    const planners =  await Planner.find({'idTutor': userId, 'idAluno': idAluno})
     let arrayPlanners = []
     planners.forEach(planner => {
       let objPlanner = {
@@ -68,7 +70,8 @@ export const getAllUser = async(req, res) => {
                         title: planner.titulo,
                         description: planner.descricao,
                         status: planner.status,
-                        userId: planner.userId
+                        idTutor: planner.idTutor,
+                        idAluno: planner.idAluno,
                       }
       arrayPlanners.push(objPlanner)
     });
@@ -80,9 +83,9 @@ export const getAllUser = async(req, res) => {
 
 export const store = async (req, res) => { 
   try {
-    const { title, description, status, userId} = req.body;
+    const { title, description, status, idAluno, idTutor} = req.body;
     const planner = new Planner({
-      titulo: title, descricao: description, status, userId
+      titulo: title, descricao: description, status, idAluno, idTutor
     })
     if(title && description && userId){
       planner.save();
@@ -90,7 +93,8 @@ export const store = async (req, res) => {
         title: planner.titulo,
         description: planner.descricao,
         status: planner.status,
-        userId: planner.userId,
+        idTutor: planner.idTutor,
+        idAluno: planner.idAluno,
         events: planner.atividades
       })
     }

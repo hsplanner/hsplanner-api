@@ -9,7 +9,14 @@ const UsuarioSchema = new Schema({
     dataNascimento: {type: Date, require: true},
     passwordHash: {type: String, require: true},
     tipo: {type: Number, default: 0},
-    idTutor: {type: String, require: false}
+    alunos: [{
+        idAluno: {type: String, require: false},
+        ativo: {type: Number, default: 0},
+    }],
+    tutores: [{
+        idTutor: {type: String, require: false},
+        ativo: {type: Number, default: 0},
+    }]
 });
 
 const User = model('Usuario', UsuarioSchema)

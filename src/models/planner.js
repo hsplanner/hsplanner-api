@@ -6,7 +6,8 @@ const PlannerSchema = new Schema({
   titulo: {type: String, require: true},
   descricao: String,
   status: {type: Number, default: 1},
-  userId: {type: String, require: true},
+  idTutor: {type: String, require: true},
+  idAluno: {type: String, require: true},
   atividades: [
     {
     descricao: {type: String},
