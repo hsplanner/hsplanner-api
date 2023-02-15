@@ -307,10 +307,11 @@ export const getTutoresForStudents = async(req, res) => {
     let arrayTutores = []
 
     if(tutores.length > 0 ){
-      tutores.forEach(tutor => {
+      tutores.forEach(async (tutor) => {
         //if(tutor.ativo == 0){
+          var buscaTutor = await User.findById(tutor.idTutor); 
           var objTutor = {
-            _id: tutor._id,
+            name: buscaTutor.nome,
             idTutor: tutor.idTutor,
             ativo: tutor.ativo, 
           };
@@ -318,6 +319,8 @@ export const getTutoresForStudents = async(req, res) => {
         //}
       });
     }
+
+    await sleep(1000);
     return res.json(arrayTutores)
 
   } catch (err) {
