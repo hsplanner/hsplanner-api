@@ -132,7 +132,6 @@ export const getAllStudentOfTutor = async (req, res) => {
     
     alunos.forEach(async (user) => {
         var aluno = await User.findById(user.idAluno);
-        console.log(aluno);
         var objUser = {
           _id: aluno.id,
           name: aluno.nome, 
@@ -251,6 +250,76 @@ export const patchEstudentExist = async(req, res) => {
     else{
       return res.status(400).send("Usuário inválido")  
     }
+  } catch (err) {
+    return res.status(400).send(err.message)
+  }
+}
+
+export const patchActivetStudentForTutor = async(req, res) => {
+  try {
+    const { idAluno, idTutor } = req.body;
+    const tutor =  await User.findById(idTutor);
+    const aluno = await User.findById(idAluno);
+    const alunosOfTutor = tutor.alunos 
+    alunosOfTutor.forEach( async (user) => {
+      if(user.idAluno === aluno._id.toString()){
+        if(tutor.tipo === 0 && aluno.tipo === 1){
+  
+          await User.updateOne(
+            {
+              "_id": idTutor,
+              "alunos.idAluno": idAluno 
+            }, {
+            $set:
+              {
+                "alunos.$.ativo": 1 
+              } 
+          })
+    
+          await User.updateOne(
+            {
+              "_id": idAluno,
+              "tutores.idTutor": idTutor 
+            }, {
+              $set:
+              {
+                "tutores.$.ativo": 1 
+              } 
+          })
+    
+          return res.json({
+            message: "Tutor ativo com sucesso!" 
+          })
+        }
+      }
+    });
+    
+  } catch (err) {
+    return res.status(400).send(err.message)
+  }
+}
+
+export const getTutoresForStudents = async(req, res) => {
+  try {
+    const { idAluno } = req.params;
+    const aluno =  await User.findById(idAluno);
+    const tutores = aluno.tutores
+    let arrayTutores = []
+
+    if(tutores.length > 0 ){
+      tutores.forEach(tutor => {
+        //if(tutor.ativo == 0){
+          var objTutor = {
+            _id: tutor._id,
+            idTutor: tutor.idTutor,
+            ativo: tutor.ativo, 
+          };
+          arrayTutores.push(objTutor);
+        //}
+      });
+    }
+    return res.json(arrayTutores)
+
   } catch (err) {
     return res.status(400).send(err.message)
   }
