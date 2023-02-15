@@ -7,7 +7,7 @@ const PlannerSchema = new Schema({
   descricao: String,
   status: {type: Number, default: 1},
   idTutor: {type: String, require: true},
-  idAluno: {type: String, require: true},
+  idAluno: {type: String, require: false},
   atividades: [
     {
     descricao: {type: String},
