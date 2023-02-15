@@ -87,7 +87,7 @@ export const store = async (req, res) => {
     const planner = new Planner({
       titulo: title, descricao: description, status, idAluno, idTutor
     })
-    if(title && description && userId){
+    if(title && description){
       planner.save();
       return res.json({
         title: planner.titulo,
