@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {getAll, getOne, store, getAllUser, update} from '../controllers/Planner/index.js';
+import {getAll, getOne, store, getAllUser, update, deletEvent} from '../controllers/Planner/index.js';
 
 const plannerRoutes = Router();
 
@@ -8,6 +8,7 @@ plannerRoutes.post('/planner', store)
 plannerRoutes.get('/planner/:id', getOne)
 plannerRoutes.get('/planners/:idUser', getAllUser)
 plannerRoutes.patch('/planner', update)
+plannerRoutes.delete('/planner/event', deletEvent)
 
 
 

@@ -135,9 +135,21 @@ export const update = async (req, res) => {
 export const deletEvent = async (req, res) => {
   try {
     const { plannerId, eventId } = req.body;
-    const planner =  await Planner.findById(plannerId);
-    const events = planner.atividades;
-
+    const planner =  await Planner.findOneAndUpdate({_id: plannerId}, {
+      $pull: {
+        "atividades": {
+          "_id": eventId
+        }
+      }
+    }).then(x => {
+    res.status(200).send({
+        message: 'Planner atualizado com sucesso!'
+    });
+    }).catch(e => {
+      res.status(400).send({
+          message: 'Falha ao atualizar o Planner =(', data: e
+      });
+    });
 
   } catch (error) {
     return res.status(400).send(error.message)
