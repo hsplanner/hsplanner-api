@@ -61,8 +61,8 @@ export const getOne = async(req, res) => {
 
 export const getAllUser = async(req, res) => {
   try {
-    const {idTutor, idAluno} = req.params;
-    const planners =  await Planner.find({'idTutor': userId, 'idAluno': idAluno})
+    const {idUser} = req.params;
+    const planners =  await Planner.find({$or: [{idTutor: idUser}, {idAluno: idUser}]});
     let arrayPlanners = []
     planners.forEach(planner => {
       let objPlanner = {
@@ -131,3 +131,15 @@ export const update = async (req, res) => {
     });
   });
 };
+
+export const deletEvent = async (req, res) => {
+  try {
+    const { plannerId, eventId } = req.body;
+    const planner =  await Planner.findById(plannerId);
+    const events = planner.atividades;
+
+
+  } catch (error) {
+    return res.status(400).send(error.message)
+  }
+}
