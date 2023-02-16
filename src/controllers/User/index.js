@@ -160,7 +160,7 @@ export const getAllStudentOfTutorAtivos = async (req, res) => {
     
     alunos.forEach(async (user) => {
         var aluno = await User.findById(user.idAluno);
-        if(aluno.ativo == 1){
+        if(user.ativo == 1){
           var objUser = {
             _id: aluno.id,
             name: aluno.nome, 
