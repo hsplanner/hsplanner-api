@@ -244,7 +244,7 @@ export const patchEstudentExist = async(req, res) => {
     const alunosOfTutor = tutor.alunos 
     alunosOfTutor.forEach( user => {
       if(user.idAluno === aluno._id.toString()){
-        return res.status(400).send("Aluno já incluido para o tutor")  
+        return res.status(400).json({message: "Aluno já incluido para o tutor"})  
 
       }
     });
