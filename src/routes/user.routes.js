@@ -2,12 +2,13 @@ import { Router } from 'express';
 import { create, getAll, getOneUsername,
          getAllStudentOfTutor, getStudentsByUsername,
          patchEstudentExist, getTutoresForStudents,
-         patchActivetStudentForTutor } from '../controllers/User/index.js';
+         patchActivetStudentForTutor, getAllStudentOfTutorAtivos } from '../controllers/User/index.js';
 
 const userRoutes = Router();
 
 userRoutes.get('/users', getAll);
-userRoutes.get('/users/:idTutor', getAllStudentOfTutor)
+userRoutes.get('/users/:idTutor', getAllStudentOfTutor);
+userRoutes.get('/students/:idTutor', getAllStudentOfTutorAtivos)
 userRoutes.get('/user/:username', getOneUsername);
 userRoutes.get('/student/:username', getStudentsByUsername);
 userRoutes.get('/tutores/:idAluno', getTutoresForStudents);

@@ -151,6 +151,37 @@ export const getAllStudentOfTutor = async (req, res) => {
   }
 }
 
+export const getAllStudentOfTutorAtivos = async (req, res) => {
+  try {
+    const {idTutor} = req.params;
+    const tutor =  await User.findById(idTutor)
+    const alunos = tutor.alunos
+    let arrayUsers = []
+    
+    alunos.forEach(async (user) => {
+        var aluno = await User.findById(user.idAluno);
+        if(aluno.ativo == 1){
+          var objUser = {
+            _id: aluno.id,
+            name: aluno.nome, 
+            username: aluno.usuario, 
+            email: aluno.email, 
+            birthdate: aluno.dataNascimento, 
+            userType: aluno.tipo, 
+            flag: user.ativo
+          };
+          arrayUsers.push(objUser);
+        }
+
+    });
+
+    await sleep(2000);
+    return res.json(arrayUsers)
+  } catch (error) {
+    return res.status(400).send(error.message)
+  }
+}
+
 export const getStudentsByUsername = async (req, res) => {
   try {
     const {username} = req.params;
