@@ -343,6 +343,7 @@ export const getTutoresForStudents = async(req, res) => {
           var buscaTutor = await User.findById(tutor.idTutor); 
           var objTutor = {
             name: buscaTutor.nome,
+            username: buscaTutor.usuario,
             idTutor: tutor.idTutor,
             ativo: tutor.ativo, 
           };
