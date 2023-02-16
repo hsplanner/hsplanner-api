@@ -139,7 +139,7 @@ export const getAllStudentOfTutor = async (req, res) => {
           email: aluno.email, 
           birthdate: aluno.dataNascimento, 
           userType: aluno.tipo, 
-          flag: user.ativo
+          ativo: user.ativo
         };
         arrayUsers.push(objUser);
     });
@@ -168,7 +168,7 @@ export const getAllStudentOfTutorAtivos = async (req, res) => {
             email: aluno.email, 
             birthdate: aluno.dataNascimento, 
             userType: aluno.tipo, 
-            flag: user.ativo
+            ativo: user.ativo
           };
           arrayUsers.push(objUser);
         }
