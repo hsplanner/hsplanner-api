@@ -49,7 +49,7 @@ export const create = async (req, res) => {
         idTutor: idTutor,
         ativo: 1
       }
-      if(!tutor){
+      if(userType === 0){
         user = new User({
           nome: name, usuario: username, email, dataNascimento: birthdate,
           passwordHash: cryptpassword, tipo: userType
@@ -74,7 +74,7 @@ export const create = async (req, res) => {
               alunos: alunos
             } 
         }).then(x => {
-          res.status(200).send({
+          return res.json({
               name: user.nome, 
               username: user.usuario, 
               email: user.email, 
@@ -82,19 +82,21 @@ export const create = async (req, res) => {
               userType: user.tipo, 
           });
         }).catch(e => {
-          res.status(400).send({
-              message: 'Falha ao atualizar o Planner =(', data: e
+          return res.status(400).send({
+              message: 'Falha ao atualizar o Usuário =(', data: e
           });
         });
       }
-      console.log("Salvou no DB")
-      return res.json({
-        name: user.nome, 
-        username: user.usuario, 
-        email: user.email, 
-        birthdate: user.dataNascimento, 
-        userType: user.tipo, 
-      })
+      else{
+        return res.json({
+          name: user.nome, 
+          username: user.usuario, 
+          email: user.email, 
+          birthdate: user.dataNascimento, 
+          userType: user.tipo, 
+        })
+      }
+ 
     } catch (error) {
       console.log("error", error)
       return res.status(400).send(error.message)
