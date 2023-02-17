@@ -240,47 +240,53 @@ export const patchEstudentExist = async(req, res) => {
     const { idTutor } = req.body;
     const tutor =  await User.findById(idTutor)
     const aluno = await User.findOne({usuario: username})
-
+    var verifica = false
     const alunosOfTutor = tutor.alunos 
     alunosOfTutor.forEach( user => {
-      if(user.idAluno === aluno._id.toString()){
-        return res.status(400).json({message: "Aluno já incluido para o tutor"})  
-
+      if(user.idAluno == aluno._id.toString()){
+          verifica = true;
       }
     });
 
-    if(tutor.tipo === 0 && aluno.tipo === 1){
-      const tutores = {
-        idTutor: idTutor,
-        ativo: 0
+    if(!verifica){
+      if(tutor.tipo === 0 && aluno.tipo === 1){
+        const tutores = {
+          idTutor: idTutor,
+          ativo: 0
+        }
+        const alunos = {
+          idAluno: aluno._id.toString(),
+          ativo: 0
+        }
+        console.log(alunos);
+  
+        await User.findOneAndUpdate({_id: idTutor}, {
+          $push:
+            {
+              alunos: alunos
+            } 
+        })
+  
+        await User.findOneAndUpdate({_id: aluno._id}, {
+          $push:
+            {
+              tutores: tutores
+            } 
+        })
+  
+        return res.json({
+          message: "Aluno adicionado com sucesso" 
+        })
       }
-      const alunos = {
-        idAluno: aluno._id.toString(),
-        ativo: 0
+      else{
+        return res.status(400).json({message: "Usuário inválido"})  
       }
-      console.log(alunos);
-
-      await User.findOneAndUpdate({_id: idTutor}, {
-        $push:
-          {
-            alunos: alunos
-          } 
-      })
-
-      await User.findOneAndUpdate({_id: aluno._id}, {
-        $push:
-          {
-            tutores: tutores
-          } 
-      })
-
-      return res.json({
-        message: "Aluno adicionado com sucesso" 
-      })
     }
     else{
-      return res.status(400).send("Usuário inválido")  
+      return res.status(400).json({message: "Aluno já incluido para o Tutor!"})  
+
     }
+    
   } catch (err) {
     return res.status(400).send(err.message)
   }
