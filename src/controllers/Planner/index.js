@@ -163,7 +163,7 @@ export const postCopyPlanner = async (req, res) => {
     const planner = await Planner.findById(plannerId); 
     const newPlanner = new Planner({
       titulo: planner.titulo, descricao: planner.descricao, 
-      status: planner.status, idAluno, idTutor, atividades: planner.atividades
+      status: 1, idAluno, idTutor, atividades: planner.atividades
     })
     if(planner.titulo != null && planner.descricao != null){
       newPlanner.save();
